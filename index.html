@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Welcome to Our Family Website | Clan O'Mahony</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+/* =============================================
+   CLAN O'MAHONY — Modern Heritage Design
+   ============================================= */
+:root {
+  --forest:    #1a4a2e;
+  --forest-dk: #0f2e1c;
+  --forest-lt: #2d6b45;
+  --amber:     #d4750a;
+  --amber-lt:  #e8931a;
+  --cream:     #f8f4ee;
+  --cream-dk:  #efe8dc;
+  --warm-white:#fdfaf6;
+  --text:      #2c2416;
+  --text-lt:   #5a4a35;
+  --border:    #c8b89a;
+  --shadow:    rgba(15,46,28,0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: "Source Serif 4", Georgia, serif; font-size: 16px; color: var(--text); background: var(--forest-dk); min-height: 100vh; }
+
+/* ANIMATIONS */
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInUp   { from { opacity:0; transform:translateY(22px);  } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn     { from { opacity:0; } to { opacity:1; } }
+@keyframes slideInLeft{ from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
+@keyframes scaleIn    { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
+@keyframes dropIn     { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+.sticky-top   { animation: fadeInDown 0.5s ease both; }
+.main-content { animation: fadeInUp 0.5s 0.15s ease both; }
+.sidebar      { animation: slideInLeft 0.5s 0.2s ease both; }
+.page.active  { animation: scaleIn 0.3s ease both; }
+.slide.active .slide-caption { animation: fadeInUp 0.4s 0.1s ease both; }
+
+/* STICKY HEADER + NAV */
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  transition: box-shadow 0.3s ease;
+}
+.sticky-top.scrolled { box-shadow: 0 4px 28px rgba(0,0,0,0.5); }
+
+/* HEADER */
+.site-header {
+  background: linear-gradient(135deg, var(--forest-dk) 0%, var(--forest) 50%, var(--forest-lt) 100%);
+  border-bottom: 2px solid var(--amber);
+  overflow: hidden;
+  max-height: 200px;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), border 0.3s ease;
+}
+.site-header::before {
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.sticky-top.scrolled .site-header {
+  max-height: 0;
+  border-bottom: none;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 24px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.site-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(20px, 3vw, 34px);
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+.site-title .kicker {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.42em;
+  font-weight: 400;
+  color: var(--amber-lt);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-family: "Source Serif 4", serif;
+  margin-bottom: 3px;
+}
+.shamrock { font-size: 1.3em; line-height: 1; }
+.header-tagline {
+  font-style: italic;
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  text-align: right;
+  max-width: 200px;
+  line-height: 1.5;
+}
+
+/* NAV */
+.main-nav { background: var(--forest-dk); border-bottom: 1px solid rgba(212,117,10,0.35); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: stretch; }
+/* CRITICAL: nav-items MUST be display:flex row */
+#navItems { display: flex; flex-direction: row; align-items: stretch; flex: 1; }
+.nav-item { position: relative; }
+.nav-item > a {
+  display: flex; align-items: center;
+  padding: 11px 13px;
+  color: rgba(255,255,255,0.82);
+  text-decoration: none;
+  font-family: "Source Serif 4", serif;
+  font-size: 13px; font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+}
+.nav-item > a:hover, .nav-item.active > a {
+  color: #fff;
+  background: rgba(255,255,255,0.07);
+  border-bottom-color: var(--amber);
+}
+.nav-item > a .arrow { margin-left: 4px; font-size: 9px; opacity:0.5; transition: transform 0.2s; }
+.nav-item:hover > a .arrow { transform: rotate(180deg); }
+.dropdown {
+  display: none; position: absolute; top: 100%; left: 0; min-width: 210px;
+  background: var(--forest-dk); border: 1px solid rgba(212,117,10,0.25);
+  border-top: 2px solid var(--amber); box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 200; animation: dropIn 0.18s ease both;
+}
+.nav-item:hover .dropdown { display: block; }
+.dropdown a {
+  display: block; padding: 8px 16px;
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  font-size: 12px; font-family: "Source Serif 4", serif;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: color 0.15s, background 0.15s, padding-left 0.15s;
+}
+.dropdown a:hover { color: var(--amber-lt); background: rgba(255,255,255,0.06); padding-left: 22px; }
+.nav-toggle { display: none; background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 7px 11px; cursor: pointer; font-size: 16px; margin: 7px 0 7px auto; border-radius: 4px; }
+@media (max-width: 900px) {
+  .nav-toggle { display: block; }
+  .nav-inner { flex-wrap: wrap; }
+  #navItems { flex-direction: column; display: none; width: 100%; }
+  #navItems.open { display: flex; animation: fadeIn 0.2s ease; }
+  .nav-item > a { padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); border-right: none; }
+  .dropdown { position: static; border: none; border-top: 1px solid rgba(212,117,10,0.2); box-shadow: none; animation: none; }
+  .nav-item.open .dropdown { display: block; }
+  .dropdown a { padding-left: 28px; }
+}
+
+/* LAYOUT */
+.site-body { max-width: 1200px; margin: 0 auto; padding: 24px 20px; display: grid; grid-template-columns: 1fr 230px; gap: 24px; align-items: start; }
+@media (max-width: 768px) { .site-body { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+.main-content { background: var(--warm-white); border-radius: 6px; box-shadow: 0 2px 16px var(--shadow); overflow: hidden; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* SLIDESHOW */
+.slideshow-wrap { position: relative; background: #000; border-radius: 6px 6px 0 0; overflow: hidden; aspect-ratio: 725/460; }
+.slide { display: none; position: absolute; inset: 0; }
+.slide.active { display: block; }
+.slide img { width: 100%; height: 100%; object-fit: cover; }
+.slide-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.82)); padding: 28px 18px 14px; color: #fff; }
+.slide-caption h4 { font-family: "Playfair Display", serif; font-size: 16px; font-weight: 600; margin-bottom: 3px; line-height: 1.3; }
+.slide-caption p { font-size: 12px; color: rgba(255,255,255,0.8); font-style: italic; }
+.slide-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; border: none; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 5; }
+.slide-btn:hover { background: var(--amber); }
+.slide-btn.prev { left: 12px; }
+.slide-btn.next { right: 12px; }
+.slide-dots { display: flex; justify-content: center; gap: 6px; padding: 10px; background: #111; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; border: none; transition: background 0.2s, transform 0.2s; }
+.dot.active { background: var(--amber); transform: scale(1.2); }
+
+/* POST CONTENT */
+.post-content { padding: 28px 32px; }
+.post-content h2.page-title { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 700; color: var(--forest); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--cream-dk); }
+.post-content p { line-height: 1.75; margin-bottom: 14px; color: var(--text); font-size: 15px; }
+.post-content a { color: var(--forest-lt); }
+.post-content a:hover { color: var(--amber); }
+.post-content h3 { font-family: "Playfair Display", serif; font-size: 20px; color: var(--forest); margin: 22px 0 10px; font-weight: 600; }
+.post-content h4 { font-family: "Playfair Display", serif; font-size: 17px; color: var(--forest); margin: 18px 0 8px; }
+.post-content img { max-width: 100%; height: auto; border-radius: 4px; margin: 10px auto; display: block; box-shadow: 0 2px 8px var(--shadow); }
+.post-content blockquote { border-left: 4px solid var(--amber); background: var(--cream); padding: 14px 18px; margin: 16px 0; font-style: italic; color: var(--text-lt); border-radius: 0 4px 4px 0; }
+.blog-post { border-bottom: 1px solid var(--cream-dk); padding: 24px 0; }
+.blog-post:last-child { border-bottom: none; }
+.blog-post h3 { font-family: "Playfair Display", serif; font-size: 20px; color: var(--forest); margin-bottom: 10px; }
+.blog-post .post-meta { font-size: 12px; color: var(--text-lt); margin-bottom: 10px; font-style: italic; }
+.blog-post .post-body { font-size: 15px; line-height: 1.75; }
+.blog-post .post-body p { margin-bottom: 12px; }
+
+/* COMMENTS */
+.comments-section { background: var(--cream); border-top: 2px solid var(--cream-dk); padding: 24px 32px; }
+.comments-section h4 { font-family: "Playfair Display", serif; font-size: 18px; color: var(--forest); margin-bottom: 18px; font-weight: 600; }
+.comment { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.comment:last-child { border-bottom: none; }
+.comment-author { font-weight: 600; color: var(--forest); font-size: 14px; }
+.comment-date { font-size: 12px; color: var(--text-lt); font-style: italic; margin-bottom: 6px; }
+.comment-body { font-size: 14px; line-height: 1.65; color: var(--text); }
+.comment.child { margin-left: 28px; padding-left: 14px; border-left: 3px solid var(--amber); }
+
+/* SIDEBAR */
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+.sidebar-widget { background: var(--warm-white); border-radius: 6px; box-shadow: 0 2px 12px var(--shadow); overflow: hidden; }
+.widget-header { background: linear-gradient(135deg, var(--forest) 0%, var(--forest-lt) 100%); padding: 11px 16px; font-family: "Source Serif 4", serif; font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.5px; text-transform: uppercase; }
+.vmenu { list-style: none; }
+.vmenu > li > a { display: block; padding: 10px 16px; background: var(--amber); color: #fff; text-decoration: none; font-family: "Source Serif 4", serif; font-size: 14px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.15); transition: background 0.2s, padding-left 0.2s; }
+.vmenu > li > a:hover, .vmenu > li > a.active { background: var(--forest); padding-left: 22px; }
+.vmenu-sub { list-style: none; background: var(--cream); display: none; }
+.vmenu > li.open .vmenu-sub { display: block; }
+.vmenu-sub li a { display: block; padding: 7px 16px 7px 24px; color: var(--amber); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--cream-dk); transition: color 0.15s, background 0.15s; }
+.vmenu-sub li a:hover { color: var(--forest); background: rgba(0,0,0,0.04); }
+.search-form { padding: 14px; display: flex; gap: 8px; }
+.search-form input { flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 4px; font-family: "Source Serif 4", serif; font-size: 13px; background: var(--cream); color: var(--text); }
+.search-form button { padding: 8px 14px; background: var(--amber); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-family: "Source Serif 4", serif; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+.search-form button:hover { background: var(--forest); }
+
+/* FOOTER */
+.site-footer { background: var(--forest-dk); border-top: 3px solid var(--amber); padding: 24px 20px; text-align: center; color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 24px; }
+.site-footer p { margin-bottom: 4px; }
+.site-footer a { color: var(--amber-lt); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+/* UTILITY */
+.aligncenter { display: block; margin: 10px auto; }
+.alignleft { float: left; margin: 0 16px 10px 0; }
+.alignright { float: right; margin: 0 0 10px 16px; }
+</style>
+</head>
+<body>
+
+<!-- STICKY HEADER + NAV WRAPPER -->
+<div class="sticky-top" id="stickyTop">
+
+<!-- HEADER -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#home" class="site-title" onclick="showPage('home')">
+      <span class="kicker"><span class="shamrock">☘</span> Clan O'Mahony</span>
+      Welcome to Our Family Website
+    </a>
+    <p class="header-tagline">A living archive of family history, stories, and memories</p>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="main-nav" id="mainNav">
+  <div class="nav-inner">
+    <button class="nav-toggle" onclick="toggleMobileNav()">☰ Menu</button>
+    <div class="nav-items" id="navItems">
+      <div class="nav-item active" id="nav-home">
+        <a href="#" onclick="showPage('home');return false;">Home</a>
+      </div>
+      <div class="nav-item" id="nav-about">
+        <a href="#" onclick="showPage('about');return false;">About <span class="arrow">▾</span></a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('about');return false;">Objective</a>
+          <a href="#" onclick="showPage('about');return false;">Tips to use website</a>
+          <a href="#" onclick="showPage('about');return false;">Appreciation</a>
+        </div>
+      </div>
+      <div class="nav-item" id="nav-ciccone">
+        <a href="#" onclick="showPage('ciccone');return false;">Ciccone <span class="arrow">▾</span></a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('ciccone');return false;">Milestones</a>
+          <a href="#" onclick="showPage('ciccone');return false;">Dedication: Jada and Betty Ciccone</a>
+          <a href="#" onclick="showPage('ciccone');return false;">Family Letters</a>
+          <a href="#" onclick="showPage('ciccone');return false;">Photos</a>
+          <a href="#" onclick="showPage('ciccone');return false;">Videos</a>
+        </div>
+      </div>
+      <div class="nav-item" id="nav-saunders">
+        <a href="#" onclick="showPage('saunders');return false;">Saunders/Kaesemeyer <span class="arrow">▾</span></a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('saunders');return false;">Family History</a>
+          <a href="#" onclick="showPage('saunders');return false;">Dedication: George S Saunders Sr.</a>
+          <a href="#" onclick="showPage('saunders');return false;">In Memory: Jeanne &amp; George Saunders Jr.</a>
+          <a href="#" onclick="showPage('saunders');return false;">In Memory: Sarah "Sally" Saunders White</a>
+          <a href="#" onclick="showPage('saunders');return false;">Family Letters</a>
+          <a href="#" onclick="showPage('saunders');return false;">Milestones</a>
+          <a href="#" onclick="showPage('saunders');return false;">Photos</a>
+          <a href="#" onclick="showPage('saunders');return false;">Videos</a>
+        </div>
+      </div>
+      <div class="nav-item" id="nav-mahony">
+        <a href="#" onclick="showPage('mahony');return false;">Mahony/Hickey <span class="arrow">▾</span></a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('mahony');return false;">Family History</a>
+          <a href="#" onclick="showPage('mahony');return false;">Dedication: Helen &amp; Ray Mahony</a>
+          <a href="#" onclick="showPage('mahony');return false;">Recognition: Raymund L Mahony Sr.</a>
+          <a href="#" onclick="showPage('mahony');return false;">Family Letters</a>
+          <a href="#" onclick="showPage('mahony');return false;">Milestones/Accomplishments</a>
+          <a href="#" onclick="showPage('mahony');return false;">Weddings/Reunions</a>
+          <a href="#" onclick="showPage('mahony');return false;">Christmas Time</a>
+          <a href="#" onclick="showPage('mahony');return false;">Book of Family Values</a>
+          <a href="#" onclick="showPage('mahony');return false;">Yearbook Years</a>
+          <a href="#" onclick="showPage('mahony');return false;">Photos</a>
+          <a href="#" onclick="showPage('mahony');return false;">Photo Galleries</a>
+          <a href="#" onclick="showPage('mahony');return false;">Videos</a>
+        </div>
+      </div>
+      <div class="nav-item" id="nav-rafalowski">
+        <a href="#" onclick="showPage('rafalowski');return false;">Rafalowski/Juliano <span class="arrow">▾</span></a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('rafalowski');return false;">Family History</a>
+          <a href="#" onclick="showPage('rafalowski');return false;">Milestones/Accomplishments</a>
+          <a href="#" onclick="showPage('rafalowski');return false;">Dedication: Walt and Jay Rafalowski</a>
+          <a href="#" onclick="showPage('rafalowski');return false;">Photos</a>
+          <a href="#" onclick="showPage('rafalowski');return false;">Videos</a>
+        </div>
+      </div>
+      <div class="nav-item" id="nav-arts">
+        <a href="#" onclick="showPage('arts');return false;">Art&#8217;s Stories</a>
+      </div>
+      <div class="nav-item" id="nav-events">
+        <a href="#" onclick="showPage('events');return false;">Current Events</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+</div><!-- /sticky-top -->
+
+<!-- BODY -->
+<div class="site-body">
+  <main class="main-content">
+
+    <!-- ======== HOME ======== -->
+    <div class="page active" id="page-home">
+      <div class="slideshow-wrap">
+        <div class="slide active">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F09%2FcMahony.jpg&w=725&h=460&zc=1&q=80" alt="Mahony Family Reunion 1991"/>
+          <div class="slide-caption"><h4>Mahony Family Reunion 1991 at Lake Valhalla Club</h4><p>Photo followed awarding of family T shirts</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F09%2FDennyWeddingPic-1024x809.jpg&w=725&h=460&zc=1&q=80" alt="Denny and Adie's wedding"/>
+          <div class="slide-caption"><h4>Denny and Adie&#8217;s wedding June, 1962</h4><p>Sean, Pat, Ray, Helen, Steve, Denny, Adie, Art, Ray, Todd, and Barb</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F06%2Ffamily.jpg&w=725&h=460&zc=1&q=80" alt="Memorial weekend 2011"/>
+          <div class="slide-caption"><h4>Memorial weekend for RLM, Jr. September 2011</h4><p>Multiple Mahonys and special guests and former neighbors Mrs Leckie and Joan</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F06%2F1HickeyFamilyearly1900.jpg&w=725&h=460&zc=1&q=80" alt="Hickey family 1900"/>
+          <div class="slide-caption"><h4>Hickey family of Passaic around 1900</h4><p>Nana Mahony in upper left corner was the oldest of 7 children as was Grandma Saunders.</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F06%2F1NanaBompaHouses005.jpg&w=725&h=460&zc=1&q=80" alt="458 Prospect Street, Nutley, NJ"/>
+          <div class="slide-caption"><h4>458 Prospect Street, Nutley, NJ</h4><p>Home for Mahony&#8217;s from mid 1940s until 1952. Looks a little small for 10 people.</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F06%2F1IMG_0003_NEW.jpg&w=725&h=460&zc=1&q=80" alt="4 Saunders brothers mid-1940s"/>
+          <div class="slide-caption"><h4>4 Saunders brothers and father mid-1940s</h4><p>George, Cardie, Grandpa, Bob, Kerby</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F07%2Fciccone6.png&w=725&h=460&zc=1&q=80" alt="The Ciccones 1961"/>
+          <div class="slide-caption"><h4>The Ciccones 1961</h4><p>Jada, Betty, Carol, Kathleen, and Lizanne</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F08%2FSaundersKids1-1024x715.jpg&w=725&h=460&zc=1&q=80" alt="Saunders kids 1950"/>
+          <div class="slide-caption"><h4>Saunders kids 1950</h4><p>Colleen, Kerby, Greg, Cardie, George, Sally</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F08%2FMahonyFamPassaic1900.jpg&w=725&h=460&zc=1&q=80" alt="Mahony family in Passaic 1900"/>
+          <div class="slide-caption"><h4>Mahony family in Passaic 1900</h4><p>Front: Eleanor, Abraham Lincoln, Arthur Sawyer, Raymund Leonard, Sarah Curran</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F08%2FKaesemeyersaround1900NEW3.jpg&w=725&h=460&zc=1&q=80" alt="Kaesemeyer Family 1900"/>
+          <div class="slide-caption"><h4>Kaesemeyer Family 1900</h4><p>Back row: Theodore, Margaret, Herbert, Frank. Front row: Ahlma, Maybelle, Emmiline</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F09%2FIMG_12422-928x1024.jpg&w=725&h=460&zc=1&q=80" alt="The Gardner family"/>
+          <div class="slide-caption"><h4>The Gardner family</h4><p>Gerry, Mike, Carol, Laura, Patrick and Pete</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F09%2F4Generation1-1024x774.jpg&w=725&h=460&zc=1&q=80" alt="Four generations of Mahonys 1964"/>
+          <div class="slide-caption"><h4>Four generations of Mahonys — 1964</h4><p>Ray, Jr., Denny holding son David, Ray, Sr.</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F09%2F4Generation22-1024x677.jpg&w=725&h=460&zc=1&q=80" alt="Four generations of Mahonys 1995"/>
+          <div class="slide-caption"><h4>Four generations of Mahonys — 1995</h4><p>Denny, David with son Quinn Michael, Ray, Jr.</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F09%2FWaltJay1950-1024x761.jpg&w=725&h=460&zc=1&q=80" alt="Walt and Jay Rafalowski 1950"/>
+          <div class="slide-caption"><h4>Walt and Jay Rafalowski 1950</h4></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F10%2FKerbyArt-1024x717.jpg&w=725&h=460&zc=1&q=80" alt="Lisa & Kerby, Jan & Art"/>
+          <div class="slide-caption"><h4>Lisa &amp; Kerby, Jan &amp; Art</h4><p>Lake Valhalla Club early 1990s</p></div>
+        </div>
+        <div class="slide">
+          <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/plugins/vslider/timthumb.php?src=%2Fwp-content%2Fuploads%2F2012%2F10%2FSaundersHistory_0014-300x198.jpg&w=725&h=460&zc=1&q=80" alt="Marge Ciccone and the Mahonys"/>
+          <div class="slide-caption"><h4>Marge Ciccone and the Mahony&#8217;s</h4><p>Steve, Art, Marge Ciccone Dorne, Sean, Barb, Ray, Todd and Matt</p></div>
+        </div>
+        <button class="slide-btn prev" onclick="moveSlide(-1)">&#8249;</button>
+        <button class="slide-btn next" onclick="moveSlide(1)">&#8250;</button>
+      </div>
+      <div class="slide-dots" id="slideDots"></div>
+
+      <div class="comments-section">
+        <h4>15 Responses to <em>Home</em></h4>
+        <div class="comment"><div class="comment-author">McCann</div><div class="comment-date">September 22, 2012</div><div class="comment-body">Apparently you weren&#8217;t allowed to smile until the 1940s&#8230;. Well done.</div></div>
+        <div class="comment"><div class="comment-author">Kevin</div><div class="comment-date">September 23, 2012</div><div class="comment-body">Art, Congratulations on the launch of your family website. It really looks great. What a great legacy for the previous generations and what a great way for the younger generations to learn what a great family that they are a part of. Kevin</div></div>
+        <div class="comment"><div class="comment-author">Laurie</div><div class="comment-date">September 24, 2012</div><div class="comment-body">Art, This is wonderful and I hope some day I have the where with all to follow in your footsteps. I was particularly tickled by the appreciation page and how the idea came to fruition. I look forward to your future postings. Laurie</div></div>
+        <div class="comment"><div class="comment-author">Keith</div><div class="comment-date">September 25, 2012</div><div class="comment-body">Good work Art I am envious of anyone who actually know the history of their roots and embraces it, may god bless you and your family for hundreds of years to come. Sincerely Keith</div></div>
+        <div class="comment child"><div class="comment-author">admin</div><div class="comment-date">September 27, 2012</div><div class="comment-body">Thanks Keith, very appreciated</div></div>
+        <div class="comment"><div class="comment-author">Colin (admin)</div><div class="comment-date">September 27, 2012</div><div class="comment-body">Hey pop the clanmahony site is awesome, leave it to you to put it all together. I appreciate knowing where we come from and all the great people that make up our family. Love, Colin</div></div>
+        <div class="comment"><div class="comment-author">Steve</div><div class="comment-date">February 9, 2013</div><div class="comment-body">FYI&#8230; It was I, Steve Mahony who arranged the fire engine for Pop&#8217;s 80th.</div></div>
+        <div class="comment"><div class="comment-author">Bob Silver</div><div class="comment-date">August 29, 2015</div><div class="comment-body">This is a great site. I found it because I am seeking more information about Abe Lincoln Mahony a lobbyist who did a lot for my Uncle Corporal Joseph J Silver who was a paraplegic from WW II wounds. Any chance he is the one shown in the family picture of 1900?</div></div>
+        <div class="comment child"><div class="comment-author">art mahony</div><div class="comment-date">August 5, 2016</div><div class="comment-body">Bob — very sorry but I just picked up your note this morning. My great Uncle Lincoln is probably the man who helped your uncle. He was a newspaper reporter in Chicago (family lore has it that he was one of the first reporters on the scene after the St Valentine&#8217;s Day massacre). If you&#8217;d like those pics send me a note at <a href="mailto:artmahony@gmail.com">artmahony@gmail.com</a>. Also, any info you may have on Lincoln would be very much appreciated. BTW, I&#8217;m named for him and his brother Art.</div></div>
+        <div class="comment"><div class="comment-author">Martin Coffey</div><div class="comment-date">May 27, 2018</div><div class="comment-body">Hope I&#8217;m not intruding, Martin Coffey from Dublin, Ireland. My great grandmother, Margaret Finn is a sister to Letitia Finn. Last year (2017) I had a book published about a murder involving Margaret and another sister, Annie Finn. Appreciate your site and all that you have achieved with it&#8230; Martin</div></div>
+      </div>
+    </div>
+
+    <!-- ======== ABOUT ======== -->
+    <div class="page" id="page-about">
+      <div class="post-content">
+        <h2 class="page-title">Welcome and Overview</h2>
+        <p>Welcome to our family website. The site has been under construction for six months and we are now ready to share it with family and friends. While the website address carries the Mahony name you will see that we are focused on several families: the Ciccone, Saunders, Kaesemeyer, Rafalowski, Juliano, and Hickey families are all included.</p>
+        <p>For the past six months I&#8217;ve been designing and downloading to the site. To be clear this is NOT an exhaustive history of our families as very little research has taken place. Aside from a couple trips to the some local libraries, the content of the site was in the possession of myself and other family members. More extensive research may occur down the road but for now think of this as an online scrap book: a compilation of photos, documents, letters, articles, etc. which help to tell our collective story.</p>
+        <p>I&#8217;ve been collecting personal and family memorabilia since I was a kid. Over the years the collection began to expand as I became known, unofficially, as the family historian. My parents and siblings began to send me family items (letters, photos, documents, etc.) over the last 10 years. I created three large binders to sort and display these items. The challenge was the significant limitation in sharing the information. My next strategy was to place all the information on DVDs and distribute to the family. Once again, a very one dimensional approach. Six months ago a friend suggested creating a website and here we are. (See the <em>Appreciation</em> section for that story.)</p>
+        <p>I think you&#8217;ll find an impressive array of entries on the site today, but I am convinced that we have only scratched the surface and that there are many more family items still sitting in our homes waiting to be resurrected and shared. Which leads me to one of my key objectives: I hope family members not only enjoy perusing the site but also take the time to submit items that will enhance it. Review the <em>Tips to use Website</em> section and you will see how easy it is to participate.</p>
+        <p>Like others in my family, I&#8217;ve always enjoyed telling stories. I&#8217;ve posted a few under the <em>Art&#8217;s Stories</em> page. The entries usually deal with being part of a large family, enjoying some great friendships, an occasional scrape with authority, and the consequences of some of the decisions I&#8217;ve made (some good, some not so much!). But they are true (mostly) and from the heart.</p>
+        <p>So, welcome to our family website. I hope you enjoy your visit and come back often.</p>
+        <p><strong>Art Mahony</strong><br/><em>September 2012</em></p>
+      </div>
+      <div class="comments-section">
+        <h4>2 Responses to <em>Welcome and Overview</em></h4>
+        <div class="comment"><div class="comment-author">Joe Thunell</div><div class="comment-date">May 15, 2013</div><div class="comment-body">Art: I had a good laugh reading your stories&#8230; the bobblehead saga was both hysterical and poignant&#8230; great website. Regards, Joe Thunell</div></div>
+        <div class="comment"><div class="comment-author">Scott A. Kaesemeyer</div><div class="comment-date">January 13, 2015</div><div class="comment-body">Art, Thank you so much for all this great info. My Great Grandfather is Herbert Edward Kaesemeyer. I have saved copies of family members on that side and would like your kind permission to share in the future. Kind regards, Scott A. Kaesemeyer</div></div>
+      </div>
+    </div>
+
+    <!-- ======== CICCONE ======== -->
+    <div class="page" id="page-ciccone">
+      <div class="post-content">
+        <h2 class="page-title">Ciccone</h2>
+        <p><strong>Welcome to the Ciccone family page. Here is a summary of what you will find:</strong></p>
+        <p><strong><em>Dedication to Jada and Betty.</em></strong> They enjoyed a 42 year marriage, had three daughters, five grandchildren, and three great grandchildren. He was a veteran of World War II, teacher, successful administrator, avid volunteer, and a friend to hundreds. She was beautiful, a devoted mother, sister, and daughter, and possessed a great sense of humor.</p>
+        <p><em>The Milestones</em> section highlights some key events and accomplishments of the Ciccone family. In the <em>Family Letters</em> section you can read some letters from Betty to me during her final years. I had a special relationship with my Aunt Betty and treasure the notes she wrote me during that difficult but enlightening time. The letter from Ray, Sr. to Betty in 1944 is a family classic and worth the read for several reasons.</p>
+        <p><em>The Photos and Video</em> section displays some older and more recent images of the Ciccones. There are some great shots of our grandparents, Ray and Fanny Mahony, as well as current pics of the Gardners and Grubers. One video is currently posted which documents the &#8220;29th&#8221; Anniversary Party for Gerry and Carol Gardner hosted by their children Laura and Mike.</p>
+        <p>I look forward to continuing to add to the Ciccone family page.</p>
+        <p><strong>Art Mahony</strong><br/><em>September 2012</em></p>
+      </div>
+    </div>
+
+    <!-- ======== SAUNDERS ======== -->
+    <div class="page" id="page-saunders">
+      <div class="post-content">
+        <h2 class="page-title">Saunders/Kaesemeyer</h2>
+        <p><em><strong>Welcome to the Saunders family page. Here is a summary of what you will find:</strong></em></p>
+        <p><strong><em>The Family History</em></strong> begins with a brief overview of the Saunders, Kerby, and Kaesemeyer families by Helen Saunders Mahony written in 1990. A family tree, documents, and photos on the Kaesemeyers going back to the early 1800s are next. Photos and some key documents on the Saunders family follow.</p>
+        <p>The Saunders page is dedicated to <em>George S Saunders, Sr.</em> He was a loyal brother, friend, and son, a war hero, business founder, star athlete, and father of eight. Enjoy the photos, documents, and letters that tell the story of his life. Don&#8217;t miss the interview of George, Sr. conducted by Rosebud Saunders for her language arts class in 1995. The story about Jack getting caught skipping school is a classic.</p>
+        <p><em>Family Letters</em> contains letters from several family members from the 1920s through the 1980s. Whether the communications are from Germany during World War II or a simple note to a sister after having her first child the common themes are here once again: expressions of love and support for family with a healthy dose of humor.</p>
+        <p><em>The Milestones, Photos</em> and <em>Video</em> sections are open for business. I look forward to posting the photos, documents, articles, etc. submitted by the Saunders family for many years to come.</p>
+        <p><strong>Art Mahony</strong><br/><em>September 2012</em></p>
+      </div>
+      <div class="comments-section">
+        <h4>Comments</h4>
+        <div class="comment"><div class="comment-author">Scott A. Kaesemeyer</div><div class="comment-date">November 30, 2014</div><div class="comment-body">My father is Mark Edward Kaesemeyer son of Robert Edward Kaesemeyer, who was the son of Herbert Edward Kaesemeyer the son of Theodore Gotleib Kaesemeyer and Emma Coy. Is there an Edna Sanders/Saunders in your family tree? Your help would be much appreciated. Kind regards, Scott A. Kaesemeyer</div></div>
+        <div class="comment"><div class="comment-author">Tammy</div><div class="comment-date">January 8, 2023</div><div class="comment-body">Hello, I&#8217;m trying to find some info about my sister&#8217;s biological father. She has done ancestry DNA with some names that match on your page. She matches with an Art Mahony as the closest paternal match. There are Saunders, Beehler and Kalrider.</div></div>
+      </div>
+    </div>
+
+    <!-- ======== MAHONY ======== -->
+    <div class="page" id="page-mahony">
+      <div class="post-content">
+        <h2 class="page-title">Mahony/Hickey</h2>
+        <p><em><strong>Welcome to the Mahony/Hickey family page.</strong></em></p>
+        <h3>Family History</h3>
+        <p>The section will provide photos, bios, newspaper articles, etc. on the Mahony and Hickey families starting in the mid-1800s. Ironically, the first profile is of a non-family member named Arthur Sawyer; an Englishman who befriended and mentored Dennis Mahony in Passaic in the 1880s when his prospects for employment were very limited. Sawyer&#8217;s generosity and support of Dennis will have an effect on our family for generations.</p>
+        <h3>Dedication: Helen and Ray Mahony</h3>
+        <p>This section includes a pictorial tribute to Helen and Ray&#8217;s 79 year relationship. As the story goes, Helen was at a party in September 1931 in Nutley with another guy. My father came down the stairs, spotted her, walked up and gave her what apparently was a great kiss and took her home that night. They were together until he passed on September 3, 2010.</p>
+        <h3>Recognition: Raymund L Mahony, Sr.</h3>
+        <p>Ray, Sr. (aka Bompa) was known as <em>Mr. Essex County</em> for his contributions to the county government during his 40 year career. He was a highly respected administrator who spent a lifetime helping the less fortunate people in the county. He also helped countless people, many strangers, find employment and other resources in their time of need.</p>
+        <h3>Family Letters</h3>
+        <p>Letters written by Ray, Sr., Ray, Jr., and Helen are included. You will see their expressions of love and appreciation for their children and grandchildren. The letter from Ray, Jr. to his nieces Carol, Kathleen, and Lizzanne captures the fundamental theme of this website — that long after he was gone the cousins would stay in touch and not lose their shared legacy.</p>
+        <p><strong>Art Mahony</strong><br/><em>September 2012</em></p>
+      </div>
+      <div class="comments-section">
+        <h4>1 Response to <em>Mahony/Hickey</em></h4>
+        <div class="comment"><div class="comment-author">steve</div><div class="comment-date">December 5, 2012</div><div class="comment-body">great new additions! What a great job!</div></div>
+      </div>
+    </div>
+
+    <!-- ======== RAFALOWSKI ======== -->
+    <div class="page" id="page-rafalowski">
+      <div class="post-content">
+        <h2 class="page-title">Rafalowski/Juliano</h2>
+        <p><strong>Welcome to the <em>Rafalowski/Juliano</em> family page. Here is a summary of what you will find:</strong></p>
+        <p><strong><em>Dedication: Walt and Jay Rafalowski.</em></strong> On January 19, 1973 I met my future wife, Jan Rafalowski, at the Philadelphia Airport. It was the start of a 40 year (so far!) relationship. The day Jan and I met was her dad&#8217;s 60th birthday. I met him that night and Jan&#8217;s mom the next evening. It was there that I started to learn about these two people, Walt and Jay, who would become my future in-laws. This page is dedicated to them. Despite a very humble start for both of them they were hard working, successful, devoted to their family, and fun to be with.</p>
+        <p><em>The Milestones, Family History, Photo, and Video</em> sections highlight some of their accomplishments and history. The photo section has a pictorial profile of Jan from birth through 2012. (Some may ask why Jan is subject to this special treatment to which I would reply: keep your questions to yourself!)</p>
+        <p><strong>Art Mahony</strong><br/><em>September 2012</em></p>
+      </div>
+    </div>
+
+    <!-- ======== ART'S STORIES ======== -->
+    <div class="page" id="page-arts">
+      <div class="post-content">
+        <h2 class="page-title">Art&#8217;s Stories</h2>
+
+        <div class="blog-post">
+          <h3>Denny, Pop, and the 1950 World Series</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p><strong>The Game:</strong> The date is Saturday, October 7, 1950 and Pop (age 35) and Denny (age 10) are on their way to the World Series in Yankee Stadium. The temperature is in the mid 60s with some high clouds; a perfect day for a ball game. The first pitch is scheduled for 2:05 PM and 68,098 fans wait anxiously.</p>
+            <p><strong>The Story:</strong> Pop and Denny are on Rt. 17 in Teteboro at a traffic light looking at their tickets when a big Cadillac pulls up next to them. Inside are two well dressed men who see that Pop and Denny have tickets for the game. One man leans out the window and asks &#8220;Why don&#8217;t you guys park your car and come to the game with us?&#8221; Hard to imagine such an offer in 2014 but this was 1950. They hopped in the Caddy. The gentlemen were both attorneys for several of the Yankees.</p>
+            <p>The Yankees win the game five to two and sweep the series. Denny and Pop head to the locker room and are ushered in. Pop rips off a piece of a cardboard box and Denny starts making the rounds to get autographs. He gets Johnny Mize, Casey Stengel, Phil Rizzuto, Yogi, Joe DiMaggio, and announcer Dizzy Dean. Not a bad day for a 10 year old baseball fan.</p>
+            <p><strong>The Epilogue:</strong> In 2005, 55 years after the series, I tell the 1950 World Series story to Whitey Ford at a Ricoh dinner in Las Vegas and ask him to sign the letter Pop had written. Whitey says &#8220;Sure, but it will cost you $100.&#8221; I look at Whitey and say &#8220;I&#8217;m really hoping two things are gonna happen right now. One, you are going to sign this autograph for my dad and my brother and two, I&#8217;m not gonna pay you $100.&#8221; Whitey looks at me a moment longer then cracks a smile. He was messing with me!</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Meeting Jan&#8230;</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>It is January 19, 1973 and I am sitting in the baggage area of Eastern Airlines at the Philadelphia Airport contemplating my future while waiting for the car service to take me out to Moorestown. It is 5:00 PM on a dark, chilly Friday evening and I am returning home after 6 months living with friends in Ft Lauderdale following college graduation.</p>
+            <p>Then it happened. I glanced up from reading my Time magazine and spotted her. She was cute, petite, had dark hair and a great smile. As the Italians say, I was hit by the thunderbolt. Finally, the guy from the car service starts reading off the names. He says a long name with a &#8220;ski&#8221; at the end. She gets up. Two names later &#8220;Mahony&#8221;. I&#8217;m up and moving quickly. She turns and says &#8220;Is this ours?&#8221; <em>Oh boy&#8230; something could be happening here!</em></p>
+            <p>So, that&#8217;s how it went in the first day and a half of our relationship. We met each other, met our parents, had dinner, saw a good movie, and found conversation and laughs came easily. We knew something was happening but didn&#8217;t know that we would be celebrating this weekend 40 years later. <em>Sometimes, you just know.</em></p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>&#8220;How old is the Kid?&#8221;</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>It is January 10, 1995 and we are in San Diego to celebrate my Dad&#8217;s 80th birthday. At about 10 AM we hear a fire truck outside with the siren going full blast. My father has always enjoyed trucks and trains. As the siren blasts my dad starts to get curious so we head out to the driveway. The fire truck is parked in front of their house and the driver is walking up the driveway with a big smile. He asks, &#8220;How old is the kid?&#8221; There are some giggles and hesitation and then several people answer: &#8220;80.&#8221;</p>
+            <p>The fire department makes money by providing truck rides to kids for a donation. We decided dad would like to get a ride for his birthday. The driver admitted he&#8217;s never had an 80 year old go for a ride before. Simple, fun, and a good cause. Another reminder of why I love my family.</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Bompa, Colin, and Bob&#8217;s Big Boy</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>It is sometime in the early 1990s and we are on vacation in San Diego visiting my parents. It&#8217;s a cold rainy day and we are finishing lunch at Bob&#8217;s Big Boy restaurant when Colin (about 7 years old) spots a Big Boy bobble-head doll. Colin becomes immediately obsessed with the doll. True to his character, Bompa returns to the restaurant and buys the doll for Colin. People have won the $200 million lotto with less excitement than Colin displays once he has the doll in hand.</p>
+            <p>Then, things change. A few years later Jan and I are informed that Colin (with some assistance from Ryan) has left the bobble-head in my parents&#8217; refrigerator so they will find it but not right away. So begins a 15-year coast to coast bobble-head relay. For the next 15 years the doll makes more coast to coast trips than the Yankees.</p>
+            <p>In 2010 I call Colin&#8217;s boss, Mike Gentile at Ricoh, and take him through the plan. During a branch recognition meeting Mike opens a box and presents Colin with the bobble-head in front of the whole team. Mission totally accomplished. My father listens to me tell the story and couldn&#8217;t be happier. The note from my dad read: <blockquote>&#8220;If you think for one minute you can out guess me than you have several things coming. With kind regard, your grand dad, RL Mahony. PS Watch your back boy!!&#8221;</blockquote></p>
+            <p>That was the last exchange. A few months later Bompa passed. The bobble-head sits on Colin&#8217;s night table now and for many years to come.</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>A routine touchdown</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>I&#8217;m watching an NFL game with my dad several years ago. The offensive team has been moving the ball and faces a first and goal at the five. The quarterback drops back and throws a routine pass for a touchdown to the end who is wide open. The receiver goes through a series of elaborate dance moves and then spikes the ball as if he&#8217;d just won the super bowl. My dad leans forward, turns right to see me and with a look which is both amused and puzzled says &#8220;Artie, isn&#8217;t that what he&#8217;s supposed to do?&#8221;</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>My first pay check and Denny&#8217;s new patio</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>It is early July 1965 and I have in my hand my very first paycheck — $82.00 from running the refreshment stand at Island Beach. As I arrive at Denny&#8217;s house my dad, mother, and various siblings are all at work laying down Denny&#8217;s new brick patio. My dad examines the check and nods his approval.</p>
+            <p>He starts to hand the check back to me but hesitates. He turns to Denny and asks how much the bricks cost. <em>Oh boy.</em> Denny answers &#8220;80 bucks&#8221; and smiles. My father says &#8220;sign the back of the check.&#8221; He takes the check and hands it to Denny. Then slides 2 dollar bills out of his pocket and hands them to me.</p>
+            <p>With the mission accomplished, though $80 poorer, I&#8217;m now heading back to work and thinking two things: I really feel good about myself right now and I&#8217;m really happy I don&#8217;t have to work on Denny&#8217;s patio.</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Fairness and the shoes that tie on the side</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>It&#8217;s September 1961 and John Metelski has just moved in up the street. He shows up for school in the 7th grade with a purple shirt, black pants, matching purple socks, and pointy shoes that tie on the side. Very, very cool. I go to my mom to let her know I need a pair of these shoes. She says my current shoes are fine. I persist. I take one last shot: &#8220;All my friends are getting the shoes! This just isn&#8217;t fair.&#8221; He pauses and looks right at me and asks &#8220;Who exactly told you everything was going to be fair?&#8221; Silence. No answer. Discussion over. Lesson learned.</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Fritzie and the lottery</h3>
+          <div class="post-meta">Posted in Art&#8217;s Stories</div>
+          <div class="post-body">
+            <p>It is October of 1963 and we are still going to Paul&#8217;s Diner after 9:00 mass on Sundays. Our waitress every week is Fritzie and she and dad have a great time kidding each other. Fritzie talks dad into sending money to a Church in Suffern, NY for a monthly raffle. Halloween of &#8217;63 dad gets a call and he just won $2300. Mom and dad were very happy for the timely infusion of cash.</p>
+            <p>Fritzie and dad always joked that if he won he would give her $700 and if she won she would do the same. The following week after we finished eating dad paid the bill and we were on our way out. As we get to the door we hear Fritzie scream and run up to dad to give him a big hug. He had given her a $700 tip.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======== CURRENT EVENTS ======== -->
+    <div class="page" id="page-events">
+      <div class="post-content">
+        <h2 class="page-title">Current Events</h2>
+
+        <div class="blog-post">
+          <h3>Helen and Ray Memorial Dinner, October 19, 2013</h3>
+          <div class="post-body">
+            <p>Several years ago Barb had the idea that when mom and pop passed we come together in Mountain Lakes for a weekend and celebrate their lives. Turns out to have been a pretty good idea! Mom and pop had made their feelings clear — this was not to be a religious or solemn event. Just a gathering for the renewal of relationships, some hearty meals, good stories, some laughs, maybe a tear or two.</p>
+            <p>Well, we did it. Dinner Friday night, spreading the ashes at the Esplanade on Saturday afternoon, and the dinner and ceremony on Saturday night were perfect. Special thanks to Chris Coombs, long time family friend, and cousin Michael-Ann for taking wonderful pictures.</p>
+            <img src="https://web.archive.org/web/20230321185940im_/http://clanmahony.com/wp-content/uploads/2013/12/7G0A3129.jpg" alt="Helen and Ray Memorial Dinner" class="aligncenter" style="max-width:100%;border-radius:4px;"/>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Ashley receives nomination for Mid Atlantic Emmy</h3>
+          <div class="post-body">
+            <p>I am not at all surprised to report that Ashley Saunders Russo has been nominated for a Mid Atlantic Emmy Award which will be presented in September in Philadelphia. The segment recognized was a profile of Shane Burcow, a college student who has Spinal Muscular Atrophy. The story shows how Shane uses courage and humor in his heroic battle with the illness. Great story and very well told. Congratulations to Ashley!</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Quinn and Aidan graduate: The academic world is rocked!!</h3>
+          <div class="post-body">
+            <p>Quinn Michael Mahony, son of Dave and Patty, recently graduated from Capistrano Unified School District. Dave&#8217;s commentary: <em>&#8220;We didn&#8217;t get the OK from Quinn&#8217;s gym teacher till 4 hours before graduation that he would let him walk. He had to run 100 bleachers and fold all the gym clothes that were turned in to make up for sleeping through his 6:30 gym class most of the semester. Very Proud!&#8221;</em></p>
+            <p>Aidan Storm Mahony also graduated from 8th grade this June with a 3.85 GPA. He is looking forward to making his mark in high school this fall.</p>
+          </div>
+        </div>
+
+        <div class="blog-post">
+          <h3>Jan wins another tennis title at Lake Valhalla Club</h3>
+          <div class="post-body">
+            <p>Jan and partner Nancy Kornbluh won the 2012 club doubles championship in a tough 3 set match. Jan has now won more singles and doubles titles than any other club member and she&#8217;s not done yet. I will keep you posted.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ======== SIDEBAR ======== -->
+  <aside class="sidebar">
+    <div class="sidebar-widget">
+      <div class="widget-header">Navigation</div>
+      <ul class="vmenu" id="sideVmenu">
+        <li><a href="#" onclick="showPage('home');return false;" class="active">Home</a></li>
+        <li>
+          <a href="#" onclick="showPage('about');return false;">About</a>
+          <ul class="vmenu-sub">
+            <li><a href="#" onclick="showPage('about');return false;">Objective</a></li>
+            <li><a href="#" onclick="showPage('about');return false;">Tips to use website</a></li>
+            <li><a href="#" onclick="showPage('about');return false;">Appreciation</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" onclick="showPage('ciccone');return false;">Ciccone</a>
+          <ul class="vmenu-sub">
+            <li><a href="#" onclick="showPage('ciccone');return false;">Milestones</a></li>
+            <li><a href="#" onclick="showPage('ciccone');return false;">Dedication: Jada &amp; Betty</a></li>
+            <li><a href="#" onclick="showPage('ciccone');return false;">Family Letters</a></li>
+            <li><a href="#" onclick="showPage('ciccone');return false;">Photos</a></li>
+            <li><a href="#" onclick="showPage('ciccone');return false;">Videos</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" onclick="showPage('saunders');return false;">Saunders/Kaesemeyer</a>
+          <ul class="vmenu-sub">
+            <li><a href="#" onclick="showPage('saunders');return false;">Family History</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">Dedication: George Sr.</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">In Memory: Jeanne &amp; George Jr.</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">In Memory: Sarah "Sally"</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">Family Letters</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">Milestones</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">Photos</a></li>
+            <li><a href="#" onclick="showPage('saunders');return false;">Videos</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" onclick="showPage('mahony');return false;">Mahony/Hickey</a>
+          <ul class="vmenu-sub">
+            <li><a href="#" onclick="showPage('mahony');return false;">Family History</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Dedication: Helen &amp; Ray</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Recognition: R.L. Mahony Sr.</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Family Letters</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Milestones/Accomplishments</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Weddings/Reunions</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Christmas Time</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Book of Family Values</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Yearbook Years</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Photos</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Photo Galleries</a></li>
+            <li><a href="#" onclick="showPage('mahony');return false;">Videos</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" onclick="showPage('rafalowski');return false;">Rafalowski/Juliano</a>
+          <ul class="vmenu-sub">
+            <li><a href="#" onclick="showPage('rafalowski');return false;">Family History</a></li>
+            <li><a href="#" onclick="showPage('rafalowski');return false;">Milestones</a></li>
+            <li><a href="#" onclick="showPage('rafalowski');return false;">Dedication: Walt &amp; Jay</a></li>
+            <li><a href="#" onclick="showPage('rafalowski');return false;">Photos</a></li>
+            <li><a href="#" onclick="showPage('rafalowski');return false;">Videos</a></li>
+          </ul>
+        </li>
+        <li><a href="#" onclick="showPage('arts');return false;">Art&#8217;s Stories</a></li>
+        <li><a href="#" onclick="showPage('events');return false;">Current Events</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-header">Search</div>
+      <form class="search-form" onsubmit="alert('Search coming soon!');return false;">
+        <input type="text" placeholder="Search..."/>
+        <button type="submit">Go</button>
+      </form>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p>Copyright &copy; 2025 Clan O&#8217;Mahony Family Website. All Rights Reserved.</p>
+  <p>Hosted on <a href="https://pages.github.com" target="_blank">GitHub Pages</a> &mdash; free forever.</p>
+</footer>
+
+<script>
+// ---- SPA PAGE ROUTING ----
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + name);
+  const nav = document.getElementById('nav-' + name);
+  if (page) page.classList.add('active');
+  if (nav) nav.classList.add('active');
+
+  // update sidebar vmenu active
+  document.querySelectorAll('.vmenu > li > a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.vmenu > li').forEach(li => li.classList.remove('open'));
+  const vmenuLinks = document.querySelectorAll('.vmenu > li > a');
+  vmenuLinks.forEach(a => {
+    if (a.getAttribute('onclick') && a.getAttribute('onclick').includes("'" + name + "'")) {
+      a.classList.add('active');
+      a.parentElement.classList.add('open');
+    }
+  });
+
+  window.scrollTo(0, 0);
+}
+
+// ---- SLIDESHOW ----
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('slideDots');
+
+// Build dots
+slides.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+});
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dotsContainer.children[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dotsContainer.children[currentSlide].classList.add('active');
+}
+
+function moveSlide(dir) { goToSlide(currentSlide + dir); }
+
+// Auto-advance every 8 seconds
+setInterval(() => moveSlide(1), 8000);
+
+// ---- MOBILE NAV ----
+function toggleMobileNav() {
+  document.getElementById('navItems').classList.toggle('open');
+}
+
+// ---- SIDEBAR VMENU TOGGLE ----
+document.querySelectorAll('.vmenu > li > a').forEach(a => {
+  const sub = a.parentElement.querySelector('.vmenu-sub');
+  if (sub) {
+    a.addEventListener('click', function(e) {
+      const li = this.parentElement;
+      const wasOpen = li.classList.contains('open');
+      document.querySelectorAll('.vmenu > li').forEach(l => l.classList.remove('open'));
+      if (!wasOpen) li.classList.add('open');
+    });
+  }
+});
+
+// Init: open the home vmenu item
+document.querySelector('.vmenu > li').classList.add('open');
+
+// ---- SCROLL SHRINK HEADER ----
+const stickyTop = document.getElementById('stickyTop');
+let lastScroll = 0;
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+
+  // Collapse header after 80px of scrolling
+  if (scrollY > 80) {
+    stickyTop.classList.add('scrolled', 'elevated');
+  } else {
+    stickyTop.classList.remove('scrolled', 'elevated');
+  }
+
+  lastScroll = scrollY;
+}, { passive: true });
+
+// ---- SCROLL REVEAL for blog posts and comments ----
+const revealEls = document.querySelectorAll('.blog-post, .comment, .post-content p');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeInUp 0.4s ease both';
+      entry.target.style.opacity = '1';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+revealEls.forEach(el => {
+  el.style.opacity = '0';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
