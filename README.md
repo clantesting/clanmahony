@@ -1,4 +1,4 @@
-# Clan O'Mahony Family Website
+# Clan Mahony Family Website
 
 Static rebuild of clanmahony.com for free hosting on GitHub Pages.
 
